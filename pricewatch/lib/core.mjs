@@ -2,7 +2,9 @@ import crypto from 'node:crypto';
 import { getStore } from '@netlify/blobs';
 import { PRICE_FIELDS } from '../public/shared.js';
 
-export const env = (k) => (globalThis.Netlify?.env?.get?.(k)) ?? process.env[k];
+const ALIAS = { SERPAPI_KEY: 'SERPERAPI_KEY' };
+const read = (k) => (globalThis.Netlify?.env?.get?.(k)) ?? process.env[k];
+export const env = (k) => read(k) ?? (ALIAS[k] ? read(ALIAS[k]) : undefined);
 
 // ---------- responses ----------
 export const json = (body, status = 200) =>
